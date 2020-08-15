@@ -79,76 +79,76 @@ class SegmentedButton : RadioGroup, View.OnClickListener {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
 
         val a = context.theme.obtainStyledAttributes(
-            attrs,
-            R.styleable.SegmentedButton,
-            0, 0
+                attrs,
+                R.styleable.SegmentedButton,
+                0, 0
         )
 
         with(a) {
 
             // TODO add orientation handling
             spreadType =
-                SegmentSpreadType.values()[getInt(
-                    R.styleable.SegmentedButton_spreadType,
-                    SegmentSpreadType.wrap.value
-                )]
+                    SegmentSpreadType.values()[getInt(
+                            R.styleable.SegmentedButton_spreadType,
+                            SegmentSpreadType.wrap.value
+                    )]
 
             textSize = getDimensionPixelSize(
-                R.styleable.SegmentedButton_textSize,
-                context.resources.getDimensionPixelSize(R.dimen.default_segment_text_size)
+                    R.styleable.SegmentedButton_textSize,
+                    context.resources.getDimensionPixelSize(R.dimen.default_segment_text_size)
             )
 
             segmentHeight = getDimensionPixelSize(
-                R.styleable.SegmentedButton_segmentHeight,
-                context.resources.getDimensionPixelSize(R.dimen.default_segment_height)
+                    R.styleable.SegmentedButton_segmentHeight,
+                    context.resources.getDimensionPixelSize(R.dimen.default_segment_height)
             )
 
             textColor = getColor(
-                R.styleable.SegmentedButton_textColor,
-                ContextCompat.getColor(context, R.color.default_text_color)
+                    R.styleable.SegmentedButton_textColor,
+                    ContextCompat.getColor(context, R.color.default_text_color)
             )
 
             textColorSelected = getColor(
-                R.styleable.SegmentedButton_textColorChecked,
-                ContextCompat.getColor(context, R.color.default_text_color_checked)
+                    R.styleable.SegmentedButton_textColorChecked,
+                    ContextCompat.getColor(context, R.color.default_text_color_checked)
             )
 
             segmentColor = getColor(
-                R.styleable.SegmentedButton_segmentColor,
-                ContextCompat.getColor(context, R.color.default_segment_color)
+                    R.styleable.SegmentedButton_segmentColor,
+                    ContextCompat.getColor(context, R.color.default_segment_color)
             )
 
             segmentColorSelected = getColor(
-                R.styleable.SegmentedButton_segmentColorChecked,
-                ContextCompat.getColor(
-                    context,
-                    R.color.default_segment_color_checked
-                )
+                    R.styleable.SegmentedButton_segmentColorChecked,
+                    ContextCompat.getColor(
+                            context,
+                            R.color.default_segment_color_checked
+                    )
             )
 
             borderColor = getColor(
-                R.styleable.SegmentedButton_borderColor,
-                ContextCompat.getColor(context, R.color.default_border_color)
+                    R.styleable.SegmentedButton_borderColor,
+                    ContextCompat.getColor(context, R.color.default_border_color)
             )
 
             borderWidth = getDimensionPixelSize(
-                R.styleable.SegmentedButton_borderWidth,
-                context.resources.getDimensionPixelSize(R.dimen.default_border_width)
+                    R.styleable.SegmentedButton_borderWidth,
+                    context.resources.getDimensionPixelSize(R.dimen.default_border_width)
             )
 
             r = getDimensionPixelSize(
-                R.styleable.SegmentedButton_cornerRadius,
-                context.resources.getDimensionPixelSize(R.dimen.default_corner_radius)
+                    R.styleable.SegmentedButton_cornerRadius,
+                    context.resources.getDimensionPixelSize(R.dimen.default_corner_radius)
             ).toFloat()
 
             rippleColor = getColor(
-                R.styleable.SegmentedButton_rippleColor,
-                ContextCompat.getColor(context, R.color.default_ripple_color)
+                    R.styleable.SegmentedButton_rippleColor,
+                    ContextCompat.getColor(context, R.color.default_ripple_color)
             )
 
             rippleColorSelected = getColor(
-                R.styleable.SegmentedButton_rippleColorChecked,
-                ContextCompat.getColor(context, R.color.default_ripple_color_checked)
+                    R.styleable.SegmentedButton_rippleColorChecked,
+                    ContextCompat.getColor(context, R.color.default_ripple_color_checked)
             )
 
             borderInnerWidth = (borderWidth / 2f).roundToInt()
@@ -199,40 +199,40 @@ class SegmentedButton : RadioGroup, View.OnClickListener {
             (getChildAt(i) as? RadioButton)?.apply {
                 setOnClickListener(this@SegmentedButton)
                 initSegment(
-                    if (childCount == 1)
-                        SegmentType.only
-                    else
-                        when (i + 1) {
-                            1 -> SegmentType.first
-                            childCount -> SegmentType.last
-                            else -> SegmentType.center
-                        },
-                    spreadType,
-                    includeRipple
+                        if (childCount == 1)
+                            SegmentType.only
+                        else
+                            when (i + 1) {
+                                1 -> SegmentType.first
+                                childCount -> SegmentType.last
+                                else -> SegmentType.center
+                            },
+                        spreadType,
+                        includeRipple
                 )
             }
         }
     }
 
     private fun RadioButton.initSegment(
-        type: SegmentType,
-        spreadType: SegmentSpreadType,
-        includeRipple: Boolean
+            type: SegmentType,
+            spreadType: SegmentSpreadType,
+            includeRipple: Boolean
     ): RadioButton {
         this.setTextSize(TypedValue.COMPLEX_UNIT_PX, this@SegmentedButton.textSize.toFloat())
         this.typeface = segmentFont
 
         val state = buildSegmentStateDrawable(
-            type,
-            segmentColor,
-            segmentColorSelected,
-            borderColor
+                type,
+                segmentColor,
+                segmentColorSelected,
+                borderColor
         )
 
         val rippleState = wrapSegmentStateDrawableWithRipple(
-            state,
-            rippleColor,
-            rippleColorSelected
+                state,
+                rippleColor,
+                rippleColorSelected
         )
 
         val textState = buildTextColorStateList(textColor, textColorSelected)
@@ -243,60 +243,73 @@ class SegmentedButton : RadioGroup, View.OnClickListener {
         buttonDrawable = null
         gravity = CENTER
         layoutParams = LayoutParams(
-            when (spreadType) {
-                SegmentSpreadType.evenly -> MATCH_PARENT
-                SegmentSpreadType.wrap -> WRAP_CONTENT
-            }, segmentHeight, 1f
+                when (spreadType) {
+                    SegmentSpreadType.evenly -> MATCH_PARENT
+                    SegmentSpreadType.wrap -> WRAP_CONTENT
+                }, segmentHeight, 1f
         )
 
         return this
     }
 
     private fun wrapSegmentStateDrawableWithRipple(
-        drawable: Drawable,
-        rippleColor: Int,
-        rippleColorSelected: Int
+            drawable: Drawable,
+            rippleColor: Int,
+            rippleColorSelected: Int
     ) = RippleDrawable(
-        ColorStateList(
-            arrayOf(
-                stateUnchecked,
-                stateChecked
-            ), intArrayOf(rippleColor, rippleColorSelected)
-        ), drawable, drawable
+            ColorStateList(
+                    arrayOf(
+                            stateUnchecked,
+                            stateChecked
+                    ), intArrayOf(rippleColor, rippleColorSelected)
+            ), drawable, drawable
     )
 
     private fun buildSegmentStateDrawable(
-        type: SegmentType,
-        segmentColor: Int,
-        segmentColorSelected: Int,
-        borderColor: Int,
-        borderColorSelected: Int = segmentColorSelected
+            type: SegmentType,
+            segmentColor: Int,
+            segmentColorSelected: Int,
+            borderColor: Int,
+            borderColorSelected: Int = segmentColorSelected
     ) = StateListDrawable().apply {
         addState(
-            stateChecked,
-            buildSegmentLayer(type, segmentColorSelected, borderColorSelected)
+                stateChecked,
+                buildSegmentLayer(type, segmentColorSelected, borderColorSelected)
         )
         addState(
-            stateUnchecked,
-            buildSegmentLayer(type, segmentColor, borderColor)
+                stateUnchecked,
+                buildSegmentLayer(type, segmentColor, borderColor)
         )
     }
 
     private fun buildTextColorStateList(color: Int, colorSelected: Int) = ColorStateList(
-        arrayOf(
-            stateUnchecked,
-            stateChecked
-        ), intArrayOf(color, colorSelected)
+            arrayOf(
+                    stateUnchecked,
+                    stateChecked
+            ), intArrayOf(color, colorSelected)
     )
 
     private fun buildShape(type: SegmentType, color: Int, r: Float, r0: Float) = ShapeDrawable().apply {
+        val configuration = resources.configuration
         shape = RoundRectShape(
-            when (type) {
-                SegmentType.first -> floatArrayOf(r, r, r0, r0, r0, r0, r, r)
-                SegmentType.center -> floatArrayOf(r0, r0, r0, r0, r0, r0, r0, r0)
-                SegmentType.last -> floatArrayOf(r0, r0, r, r, r, r, r0, r0)
-                SegmentType.only -> floatArrayOf(r, r, r, r, r, r, r, r)
-            }, null, null
+                when (type) {
+                    SegmentType.first -> {
+                        if (configuration.layoutDirection == View.LAYOUT_DIRECTION_LTR) {
+                            floatArrayOf(r, r, r0, r0, r0, r0, r, r)
+                        } else {
+                            floatArrayOf(r0, r0, r, r, r, r, r0, r0)
+                        }
+                    }
+                    SegmentType.center -> floatArrayOf(r0, r0, r0, r0, r0, r0, r0, r0)
+                    SegmentType.last -> {
+                        if (configuration.layoutDirection == View.LAYOUT_DIRECTION_LTR) {
+                            floatArrayOf(r0, r0, r, r, r, r, r0, r0)
+                        } else {
+                            floatArrayOf(r, r, r0, r0, r0, r0, r, r)
+                        }
+                    }
+                    SegmentType.only -> floatArrayOf(r, r, r, r, r, r, r, r)
+                }, null, null
         )
 
         paint.apply {
@@ -311,20 +324,20 @@ class SegmentedButton : RadioGroup, View.OnClickListener {
     private fun buildSegmentStroke(type: SegmentType, color: Int) = buildShape(type, color, r, r0)
 
     private fun buildSegmentLayer(type: SegmentType, segmentColor: Int, strokeColor: Int = segmentColor) =
-        LayerDrawable(
-            arrayOf(
-                buildSegmentStroke(type, strokeColor),
-                buildSegmentShape(type, segmentColor)
-            )
-        ).apply {
-            when (type) {
-                SegmentType.first -> setLayerInset(1, borderWidth, borderWidth, borderInnerWidth, borderWidth)
-                SegmentType.center -> setLayerInset(1, borderInnerWidth, borderWidth, borderInnerWidth, borderWidth)
-                SegmentType.last -> setLayerInset(1, borderInnerWidth, borderWidth, borderWidth, borderWidth)
-                SegmentType.only -> setLayerInset(1, borderWidth, borderWidth, borderWidth, borderWidth)
+            LayerDrawable(
+                    arrayOf(
+                            buildSegmentStroke(type, strokeColor),
+                            buildSegmentShape(type, segmentColor)
+                    )
+            ).apply {
+                when (type) {
+                    SegmentType.first -> setLayerInset(1, borderWidth, borderWidth, borderInnerWidth, borderWidth)
+                    SegmentType.center -> setLayerInset(1, borderInnerWidth, borderWidth, borderInnerWidth, borderWidth)
+                    SegmentType.last -> setLayerInset(1, borderInnerWidth, borderWidth, borderWidth, borderWidth)
+                    SegmentType.only -> setLayerInset(1, borderWidth, borderWidth, borderWidth, borderWidth)
 
+                }
             }
-        }
 
     // move initial checked item initialization to the invoke block in order fo make it order-independent
     private fun setInitialCheckedItem() {
